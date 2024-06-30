@@ -6,6 +6,7 @@ const app = require("./app");
 (async () => {
   try {
     const con = await mongoose.connect(process.env.DATABASE_LOCAL, {});
+    console.log("Connected to database");
   } catch (err) {
     console.log(err);
   }
