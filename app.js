@@ -1,6 +1,6 @@
 const express = require("express");
 const AppError = require("./utils/AppError");
-const globalErrorHandler = require("./utils/errorController");
+const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRouter");
 
 const app = express();
