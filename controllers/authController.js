@@ -9,9 +9,9 @@ const createToken = (id) => {
   });
 };
 
-const createSendToken = (id, status, res) => {
+const createSendToken = (id, statusCode, res) => {
   const token = createToken(id);
-  res.status(200).json({
+  res.status(statusCode).json({
     status: "success",
     token,
   });
@@ -25,5 +25,5 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
   console.log(newUser);
-  createSendToken(newUser._id, 200, res);
+  createSendToken(newUser._id, 201, res);
 });
