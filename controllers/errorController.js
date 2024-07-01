@@ -2,6 +2,8 @@ const AppError = require("../utils/AppError");
 
 //Send Error at development phase
 const sendErrorDev = (err, res) => {
+  console.error(err);
+
   res.status(err.statusCode).json({
     status: err.status,
     stack: err.stack,
