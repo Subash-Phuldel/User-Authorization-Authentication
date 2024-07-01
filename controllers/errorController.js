@@ -6,8 +6,8 @@ const sendErrorDev = (err, res) => {
 
   res.status(err.statusCode).json({
     status: err.status,
-    stack: err.stack,
     message: err.message,
+    stack: err.stack,
     err,
   });
 };
@@ -53,10 +53,17 @@ const handleCastErrorDB = (err) => {
   return new AppError(400, `Invalid ${err.path}: ${err.value}`);
 };
 
+const handleJWTError = (err) => {
+  return new AppError(401, "Invalid token. Please login in again");
+};
+
+const handleTokenExpires = (err) => {
+  return new AppError(401, "Token Expires. Please login in again");
+};
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Error";
-
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, res);
   }
@@ -68,7 +75,8 @@ module.exports = (err, req, res, next) => {
     if (err.name === "CastError") error = handleCastErrorDB(err);
     if (err.code === 11000) error = handleDuplicateFieldErrorDB(err);
     if (err.name === "ValidationError") error = handleValidationErrorDB(err);
-
+    if (err.name === "JsonWebTokenError") error = handleJWTError(err);
+    if (err.name === "TokenExpiresError") error = handleTokenExpires(err);
     sendErrorProd(error, res);
   }
 };
